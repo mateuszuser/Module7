@@ -1,0 +1,130 @@
+from faker import Faker
+fake = Faker()
+
+
+"""
+Używając dziedziczenia, rozdziel podstawową klasę wizytówki na dwie osobne: pierwsza (BaseContact) 
+powinna przechowywać podstawowe dane kontaktowe takie jak imię, nazwisko, telefon, adres e-mail. 
+
+Za pomocą kolejnej klasy (BusinessContact) rozszerz klasę bazową 
+o przechowywanie informacji związanych z pracą danej osoby – stanowisko, nazwa firmy, telefon służbowy.
+
+Oba typy wizytówek, powinny oferować metodę contact(), która wyświetli na konsoli komunikat w postaci 
+“Wybieram numer +48 123456789 i dzwonię do Jan Kowalski”. Wizytówka firmowa powinna wybierać służbowy numer telefonu, 
+a wizytówka bazowa prywatny.
+Oba typy wizytówek powinny mieć dynamiczny atrybut label_length, który zwraca długość imienia i nazwiska danej osoby.
+
+Stwórz funkcję create_contacts, która będzie potrafiła komponować losowe wizytówki. Niech ta funkcja przyjmuje dwa parametry: 
+rodzaj wizytówki oraz ilość. Wykorzystaj bibliotekę faker do generowania danych.
+"""
+#imię, nazwisko, telefon, adres e-mail.
+#BusinessContact stanowisko, nazwa firmy, telefon służbowy
+
+
+
+
+
+class BaseContact:
+    def __init__(self, given_name, last_name, phone_number, email):
+        self.given_name = given_name
+        self.last_name = last_name
+        self.phone_number = phone_number
+        self.email = email
+
+        #Variables
+        self._label_length = 0
+
+    def __str__(self):
+        return f"{self.given_name} {self.last_name} {self.email}"
+    def __repr__(self):
+        return f"{self.given_name} {self.last_name} {self.email}"
+
+    def contact(self):
+        print(f"Wybieram numer {self.phone_number} i dzwonię do {self.given_name} {self.last_name} ")
+        self.label_length = len(self.given_name) + len(self.last_name) + 1 
+        return self.label_length
+
+    @property
+    def label_length(self):
+        return self._label_length
+
+    @label_length.setter
+    def label_length(self, value):
+        if value < 20:
+            print(f"odpowiednia ilość znaków - {value} (MAX20)")
+        else:
+            print(f"nieodpowiednia ilość znaków - {value} (MAX20)")
+
+      
+class BusinesContact(BaseContact):
+    def __init__(self, company_name, occupation, phone_number_company, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.company_name = company_name
+        self.occupation = occupation
+        self.phone_number_company = phone_number_company
+
+    def contact(self):
+        print(f"Wybieram numer {self.phone_number_company} i dzwonię do {self.given_name} {self.last_name}")
+        self.label_length = len(self.given_name) + len(self.last_name) + 1 
+        return self.label_length
+        
+
+list_of_random_contacts_base = []
+list_of_random_contacts_busines = []
+
+def create_contacts(kind_of_contact, number_of_contacts):
+    if kind_of_contact == "Base":
+        while number_of_contacts > 0:
+            x = fake.name()
+            y = x.split()
+            list_of_random_contacts_base.append(BaseContact(given_name =f"{y[0]}", last_name=f"{y[1]}", phone_number =f"personal: {fake.phone_number()}", email=f"{fake.email()}"))
+            number_of_contacts -=1
+    if kind_of_contact == "Busines":
+        while number_of_contacts > 0:
+            x = fake.name()
+            y = x.split()
+            list_of_random_contacts_busines.append(BusinesContact(given_name =f"{y[0]}", last_name=f"{y[1]}", phone_number =f"personal: {fake.phone_number()}", phone_number_company = f"company: {fake.phone_number()}", company_name=f"{fake.company()}", occupation=f"{fake.job()}", email=f"{fake.email()}"))
+            number_of_contacts -=1
+
+
+
+
+kontakt1 = BusinesContact(given_name ="Joyce J.", last_name="Bunch", phone_number="personal: 6680343466", phone_number_company="company: 001-522-520-4147x6216", company_name="Albers Super Markets", occupation="Taxi driver", email="JoyceJBunch@rhyta.com")
+
+kontakt2 = BusinesContact(given_name ="Arthur A.", last_name="Chapman", phone_number ="personal: 255.845.2743x077", 
+phone_number_company = "company: 010-071-1564x216 ", company_name="Almacs", occupation="Violin repairer", 
+email="ArthurAChapman@armyspy.com")
+
+kontakt3 = BusinesContact(given_name ="Ronald F.", last_name="Kitts", phone_number ="personal: 224-578-6172x8019", 
+phone_number_company = "company: 728.190.3807x751", company_name="Frank and Seder", 
+occupation="General maintenance and repair worker", email="RonaldFKitts@dayrep.com")
+
+kontakt4 = BusinesContact(given_name ="Jeanne D.", last_name="Hunt", phone_number ="personal: 987.932.6725", 
+phone_number_company = "company: 7139169002", company_name="Henry's Hamburgers", 
+occupation="Health educator", email="JeanneDHunt@dayrep.com")
+
+kontakt5 = BaseContact(given_name ="Gertrude C.", last_name="Greer", phone_number ="personal: (052)926-5374x938", 
+email="GertrudeCGreer@jourrapide.com")
+
+kontakt_key_list = [kontakt1, kontakt2, kontakt3, kontakt4, kontakt5]
+
+
+if __name__ == "__main__":
+    kontakt5.contact()
+    kontakt2.contact()
+
+    print("___________")
+
+    create_contacts("Base", 3)
+    print(list_of_random_contacts_base)
+    list_of_random_contacts_base[0].contact()
+    list_of_random_contacts_base[1].contact()
+    list_of_random_contacts_base[2].contact()
+
+    print("___________")
+
+    create_contacts("Busines", 3)
+    print(list_of_random_contacts_busines)
+    list_of_random_contacts_busines[0].contact()
+    list_of_random_contacts_busines[1].contact()
+    list_of_random_contacts_busines[2].contact()
