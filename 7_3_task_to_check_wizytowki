@@ -74,17 +74,15 @@ list_of_random_contacts_busines = []
 
 def create_contacts(kind_of_contact, number_of_contacts):
     if kind_of_contact == "Base":
-        while number_of_contacts > 0:
+        for number in range(number_of_contacts):
             x = fake.name()
             y = x.split()
             list_of_random_contacts_base.append(BaseContact(given_name =f"{y[0]}", last_name=f"{y[1]}", phone_number =f"personal: {fake.phone_number()}", email=f"{fake.email()}"))
-            number_of_contacts -=1
     if kind_of_contact == "Busines":
-        while number_of_contacts > 0:
+        for number in range(number_of_contacts):
             x = fake.name()
             y = x.split()
             list_of_random_contacts_busines.append(BusinesContact(given_name =f"{y[0]}", last_name=f"{y[1]}", phone_number =f"personal: {fake.phone_number()}", phone_number_company = f"company: {fake.phone_number()}", company_name=f"{fake.company()}", occupation=f"{fake.job()}", email=f"{fake.email()}"))
-            number_of_contacts -=1
 
 
 
