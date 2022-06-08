@@ -41,8 +41,8 @@ class Movie:
     def __repr__(self):
         return f"{self.title} {self.year} {self.genre} {self.number_of_plays}"
 
-    def play(self, play = 1):
-        self.number_of_plays += play
+    def play(self):
+        self.number_of_plays += 1
 
 class Serial(Movie):
     def __init__(self, season_number, episode_number, *args, **kwargs):
@@ -51,19 +51,7 @@ class Serial(Movie):
         self.episode_number = episode_number
 
     def __str__(self):
-        if self.season_number < 10 and self.episode_number < 10:
-            text_str = f"{self.title} S0{self.season_number}E0{self.episode_number}"
-
-        elif self.season_number > 9 and self.episode_number < 10:
-            text_str = f"{self.title} S{self.season_number}E0{self.episode_number}"
-
-        elif self.season_number < 10 and self.episode_number > 9:
-            text_str = f"{self.title} S0{self.season_number}E{self.episode_number}"
-
-        else:
-            text_str = f"{self.title} S{self.season_number}E{self.episode_number}"
-
-        return text_str
+        return f"{self.title} S{self.season_number:02}E{self.episode_number:02}"
     def __repr__(self):
         return f"{self.title} {self.year} {self.genre} {self.number_of_plays} {self.season_number} {self.episode_number}"
 
